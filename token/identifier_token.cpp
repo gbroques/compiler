@@ -2,5 +2,5 @@
 
 IdentifierToken::IdentifierToken(std::string value, int line_number)
 {
-    Token token(value, line_number);
+    Token token(Identifier, value, line_number);
 }

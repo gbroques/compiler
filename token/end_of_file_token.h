@@ -1,12 +1,12 @@
 #ifndef EOF_TOKEN_H
 #define EOF_TOKEN_H
 
-#include "token.h"
+#include "index.h"
 
-class EOFToken
+class EndOfFileToken
 {
     public:
-        EOFToken(std::string value, int line_number);
+        EndOfFileToken(std::string value, int line_number);
     
     private:
         Token token;

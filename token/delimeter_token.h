@@ -1,7 +1,7 @@
 #ifndef DELIMETER_TOKEN_H
 #define DELIMETER_TOKEN_H
 
-#include "token.h"
+#include "index.h"
 
 class DelimeterToken
 {

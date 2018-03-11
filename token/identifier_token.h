@@ -1,7 +1,7 @@
 #ifndef IDENTIFIER_TOKEN_H
 #define IDENTIFIER_TOKEN_H
 
-#include "token.h"
+#include "index.h"
 
 class IdentifierToken
 {

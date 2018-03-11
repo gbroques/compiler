@@ -1,7 +1,7 @@
 #ifndef INTEGER_TOKEN_H
 #define INTEGER_TOKEN_H
 
-#include "token.h"
+#include "index.h"
 
 class IntegerToken
 {

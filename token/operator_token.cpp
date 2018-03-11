@@ -2,5 +2,5 @@
 
 OperatorToken::OperatorToken(std::string value, int line_number)
 {
-    Token token(value, line_number);
+    Token token(Operator, value, line_number);
 }

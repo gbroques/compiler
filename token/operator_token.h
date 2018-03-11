@@ -1,7 +1,7 @@
 #ifndef OPERATOR_TOKEN_H
 #define OPERATOR_TOKEN_H
 
-#include "token.h"
+#include "index.h"
 
 class OperatorToken
 {
