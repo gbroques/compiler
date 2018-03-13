@@ -1,15 +1,12 @@
 #ifndef IDENTIFIER_TOKEN_H
 #define IDENTIFIER_TOKEN_H
 
-#include "index.h"
+#include "../index.h"
 
-class IdentifierToken
+class IdentifierToken : public Token
 {
     public:
         IdentifierToken(std::string value, int line_number);
-    
-    private:
-        Token token;
 };
 
 #endif

@@ -1,15 +1,12 @@
 #ifndef INTEGER_TOKEN_H
 #define INTEGER_TOKEN_H
 
-#include "index.h"
+#include "../index.h"
 
-class IntegerToken
+class IntegerToken : public Token
 {
     public:
         IntegerToken(std::string value, int line_number);
-    
-    private:
-        Token token;
 };
 
 #endif

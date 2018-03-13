@@ -4,22 +4,22 @@
 #include <string>
 
 typedef enum {
-    Delimeter = 1000,
-    EndOfFile = 1001,
-    Identifier = 1002,
-    Integer = 1003,
-    Operator = 1004,
-    DefaultTokenType = 1005
-} TokenType;
+    DelimeterTokenId = 1000,
+    EndOfFileTokenIdId = 1001,
+    IdentifierTokenId = 1002,
+    IntegerTokenId = 1003,
+    OperatorTokenId = 1004,
+    DefaultTokenTypeId = 1005
+} TokenTypeId;
 
 class Token
 {
     public:
         Token();
-        Token(TokenType type, std::string value, int line_number);
+        Token(TokenTypeId typeId, std::string value, int line_number);
 
     private:
-        TokenType type;
+        TokenTypeId typeId;
         std::string value;
         int line_number;
 };

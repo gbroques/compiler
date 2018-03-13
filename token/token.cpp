@@ -6,9 +6,9 @@ Token::Token()
     this->line_number = 0;
 }
 
-Token::Token(TokenType type, std::string value, int line_number)
+Token::Token(TokenTypeId typeId, std::string value, int line_number)
 {
-    this->type = type;
+    this->typeId = typeId;
     this->value = value;
     this->line_number = line_number;
 }
