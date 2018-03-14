@@ -1,5 +1,5 @@
 .vscode
 *.o
 *.gch
-scanner
 P1_test*.txt
+build

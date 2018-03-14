@@ -1,18 +1,18 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <stdlib.h>
+#include "scanner/scanner.h"
 
 std::string get_filename(int argc, char** argv);
-std::ifstream open_file(std::string filename);
-
 
 int main(int argc, char** argv) 
 {
     std::string filename = get_filename(argc, argv);
-
-    std::ifstream file = open_file(filename);
-
-    file.close();
+    
+    FiniteAutomatonDriver driver(filename);
+    Token token = driver.read();
+    std::cout << token << std::endl;
 
     return 0;
 }
@@ -25,14 +25,4 @@ std::string get_filename(int argc, char** argv)
     }
     std::string filename(argv[1]);
     return filename;
-}
-
-std::ifstream open_file(std::string filename)
-{
-    std::ifstream file(filename);
-    if (!file) {
-        std::cerr << "Error: Cannot open file '" << filename << "'.\n";
-        exit(1);
-    }
-    return file;
 }
