@@ -1,6 +1,8 @@
 #ifndef TOKEN_TYPE_ID_H
 #define TOKEN_TYPE_ID_H
 
+#include <string>
+
 typedef enum {
     DelimeterTokenId = 1000,
     EndOfFileTokenId = 1001,
@@ -12,5 +14,7 @@ typedef enum {
 } TokenTypeId;
 
 bool is_token_type_id(int num);
+
+std::string get_token_type_name(int id);
 
 #endif
