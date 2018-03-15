@@ -8,7 +8,7 @@ class EndOfFileToken : public Token
 {
     public:
         static bool is_eof(char character);
-        EndOfFileToken(std::string value, int line_number);
+        EndOfFileToken(int line_number);
 };
 
 #endif

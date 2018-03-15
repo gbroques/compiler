@@ -69,7 +69,7 @@ Token StateTransitionTable::get_token(int state, std::string string, int line_nu
         case DelimeterTokenId:
             return DelimeterToken(string, line_number);
         case EndOfFileTokenId:
-            return EndOfFileToken(string, line_number);
+            return EndOfFileToken(line_number);
         case IdentifierTokenId:
             if (KeywordToken::is_keyword(string)) {
                 return KeywordToken(string, line_number);

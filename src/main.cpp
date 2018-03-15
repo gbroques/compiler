@@ -11,8 +11,11 @@ int main(int argc, char** argv)
     std::string filename = get_filename(argc, argv);
     
     FiniteAutomatonDriver driver(filename);
-    Token token = driver.read();
-    std::cout << token << std::endl;
+    Token token;
+    do {
+        token = driver.read();
+        std::cout << token << std::endl;
+    } while (!token.is_eof());
 
     return 0;
 }

@@ -1,10 +1,5 @@
 #include "index.h"
 
-bool Token::is_identifier(int type_id)
-{
-    return type_id == IdentifierTokenId;
-}
-
 Token::Token()
 {
     this->typeId = DefaultTokenTypeId;
@@ -17,6 +12,11 @@ Token::Token(TokenTypeId typeId, std::string value, int line_number)
     this->typeId = typeId;
     this->value = value;
     this->line_number = line_number;
+}
+
+bool Token::is_eof()
+{
+    return this->typeId == EndOfFileTokenId;
 }
 
 std::ostream& operator<<(std::ostream &strm, const Token &t) {

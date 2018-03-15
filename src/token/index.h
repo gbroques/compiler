@@ -8,9 +8,9 @@
 class Token
 {
     public:
-        static bool is_identifier(int type_id);
         Token();
         Token(TokenTypeId typeId, std::string value, int line_number);
+        bool is_eof();
     
     private:
         TokenTypeId typeId;

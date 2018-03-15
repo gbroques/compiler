@@ -22,7 +22,7 @@ Token FiniteAutomatonDriver::read()
     int next_state = StateTransitionTable::get_next_state(state, next_char);
     std::string string = "";
     
-    while (StateTransitionTable::is_intermediate_state(next_state)) {
+    do {
         next_state = StateTransitionTable::get_next_state(state, next_char);
 
         check_for_table_error(next_state);
@@ -38,8 +38,10 @@ Token FiniteAutomatonDriver::read()
         if (next_char == '\n') {
             line_number++;
         }
-        file >> std::noskipws >> next_char;
-    }
+        
+    } while (file >> std::noskipws >> next_char);
+    
+    return EndOfFileToken(line_number);
 }
 
 void FiniteAutomatonDriver::check_for_table_error(int state)
