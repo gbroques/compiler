@@ -42,8 +42,8 @@ bool StateTransitionTable::is_final_state(int state)
 void StateTransitionTable::print_error(int error, int line_number)
 {
     std::string message = get_error_message(error);
-    message.append(" on line " + line_number);
-    std::cerr << "Scanner Error: " << message << std::endl;
+    message.append(" on line ");
+    std::cerr << "Scanner Error: " << message << line_number << std::endl;
 }
 
 std::string StateTransitionTable::get_error_message(int error)
@@ -51,13 +51,13 @@ std::string StateTransitionTable::get_error_message(int error)
     std::string message;
     switch (error) {
         case InvalidTransition:
-            message = "Invalid transition.";
+            message = "Invalid transition";
             break;
         case MaxIntegerLength:
-            message = "Maximum integer length exceeded.";
+            message = "Maximum integer length exceeded";
             break;
         case MaxIdentifierLength:
-            message = "Maximum integer length exceeded.";
+            message = "Maximum integer length exceeded";
             break;
     }
     return message;
@@ -92,8 +92,8 @@ const std::vector<std::vector<int>> StateTransitionTable::table = {
     {6, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
     {7, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
     {8, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
-    {9, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
     {MaxIntegerLength, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
+    {9, 0, 9, 9, 9, 9, 9, 9},
     {OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId},
     {DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId},
     {13, IdentifierTokenId, IdentifierTokenId, IdentifierTokenId, 13, 13, IdentifierTokenId, IdentifierTokenId},
