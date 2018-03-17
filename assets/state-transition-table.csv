@@ -1,5 +1,5 @@
 0-9,!,+ - * / < >,= : # . ( ) comma { } ; [ ],a-z,A-Z,EoF,White Space
-1,9,10,11,12,,EoFTk,0
+1,9,10,11,12,Error,EoFTk,0
 2,IntegerTk,IntegerTk,IntegerTk,IntegerTk,IntegerTk,IntegerTk,IntegerTk
 3,IntegerTk,IntegerTk,IntegerTk,IntegerTk,IntegerTk,IntegerTk,IntegerTk
 4,IntegerTk,IntegerTk,IntegerTk,IntegerTk,IntegerTk,IntegerTk,IntegerTk
