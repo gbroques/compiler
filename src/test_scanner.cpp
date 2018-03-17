@@ -10,10 +10,10 @@
 
 void test_scanner(std::string filename)
 {
-    FiniteAutomatonDriver driver(filename);
+    Scanner scanner(filename);
     Token token;
     do {
-        token = driver.read();
+        token = scanner.read();
         std::cout << token << std::endl;
     } while (!token.is_eof());
 }

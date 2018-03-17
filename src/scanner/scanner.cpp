@@ -4,19 +4,19 @@
 #include "scanner.h"
 #include "state_transition_table/state_transition_table.h"
 
-FiniteAutomatonDriver::FiniteAutomatonDriver(std::string filename)
+Scanner::Scanner(std::string filename)
 {
     file = open_file(filename);
     line_number = 1;
     next_char = ' ';
 }
 
-FiniteAutomatonDriver::~FiniteAutomatonDriver()
+Scanner::~Scanner()
 {
     close_file();
 }
 
-Token FiniteAutomatonDriver::read()
+Token Scanner::read()
 {
     int state = 0;
     int next_state = StateTransitionTable::get_next_state(state, next_char);
@@ -46,7 +46,7 @@ Token FiniteAutomatonDriver::read()
     return EndOfFileToken(line_number);
 }
 
-void FiniteAutomatonDriver::check_for_invalid_character(int state)
+void Scanner::check_for_invalid_character(int state)
 {
     if (StateTransitionTable::is_invalid_char(next_char) && state != COMMENT_STATE) {
         StateTransitionTable::print_invalid_char_error(next_char, line_number);
@@ -54,7 +54,7 @@ void FiniteAutomatonDriver::check_for_invalid_character(int state)
     }
 }
 
-void FiniteAutomatonDriver::check_for_table_error(int state)
+void Scanner::check_for_table_error(int state)
 {
     if (is_table_error(state)) {
         StateTransitionTable::print_error(state, line_number);
@@ -62,7 +62,7 @@ void FiniteAutomatonDriver::check_for_table_error(int state)
     }
 }
 
-std::ifstream FiniteAutomatonDriver::open_file(std::string filename)
+std::ifstream Scanner::open_file(std::string filename)
 {
     std::ifstream file(filename);
     if (!file) {
@@ -72,7 +72,7 @@ std::ifstream FiniteAutomatonDriver::open_file(std::string filename)
     return file;
 }
 
-void FiniteAutomatonDriver::close_file()
+void Scanner::close_file()
 {
     file.close();
 }

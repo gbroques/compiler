@@ -18,7 +18,7 @@ To edit import `assets/deterministic-finite-automaton.json` at https://merfoo.gi
 
 The following table is located at `src/scanner/state_transition_table/state_transition_table.cpp`.
 
-The function corresponding to the finite automaton driver is `FiniteAutomatonDriver::read()` in `src/scanner/scanner.cpp`.
+The function corresponding to the finite automaton driver is `Scanner::read()` in `src/scanner/scanner.cpp`.
 
 To edit import `assets/state-transition-table.csv` into your favorite spreadsheet program.
 

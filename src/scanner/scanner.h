@@ -3,11 +3,11 @@
 
 #include "../token/token.h"
 
-class FiniteAutomatonDriver
+class Scanner
 {
     public:
-        FiniteAutomatonDriver(std::string filename);
-        ~FiniteAutomatonDriver();
+        Scanner(std::string filename);
+        ~Scanner();
         Token read();
     
     private:
