@@ -2,7 +2,7 @@
 #include <string>
 #include <fstream>
 #include <stdlib.h>
-#include "scanner/scanner.h"
+#include "test_scanner.h"
 
 std::string get_filename(int argc, char** argv);
 
@@ -10,12 +10,7 @@ int main(int argc, char** argv)
 {
     std::string filename = get_filename(argc, argv);
     
-    FiniteAutomatonDriver driver(filename);
-    Token token;
-    do {
-        token = driver.read();
-        std::cout << token << std::endl;
-    } while (!token.is_eof());
+    test_scanner(filename);
 
     return 0;
 }
