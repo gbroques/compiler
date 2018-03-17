@@ -6,7 +6,7 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Lexical_analysis).
 
 
 ## Deterministic Finite Automaton
-![Deterministic Finite Automaton](deterministic-finite-automaton.png)
+![Deterministic Finite Automaton](assets/deterministic-finite-automaton.png)
 
 To edit import `deterministic-finite-automaton.json` at https://merfoo.github.io/fsm/
 
