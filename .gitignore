@@ -4,3 +4,4 @@
 P1_test*.txt
 build
 scanner
+!/**/scanner/
