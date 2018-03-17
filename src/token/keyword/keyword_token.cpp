@@ -6,7 +6,7 @@ bool KeywordToken::is_keyword(std::string string)
 }
 
 KeywordToken::KeywordToken(std::string value, int line_number)
-: Token(OperatorTokenId, value, line_number) {}
+: Token(KeywordTokenId, value, line_number) {}
 
 std::set<std::string> KeywordToken::keywords = {
     "start",
