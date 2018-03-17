@@ -7,7 +7,7 @@
 FiniteAutomatonDriver::FiniteAutomatonDriver(std::string filename)
 {
     file = open_file(filename);
-    line_number = 0;
+    line_number = 1;
     next_char = ' ';
 }
 
@@ -23,6 +23,8 @@ Token FiniteAutomatonDriver::read()
     std::string string = "";
     
     do {
+        check_for_invalid_character(state);
+
         next_state = StateTransitionTable::get_next_state(state, next_char);
 
         check_for_table_error(next_state);
@@ -31,7 +33,7 @@ Token FiniteAutomatonDriver::read()
             return StateTransitionTable::get_token(next_state, string, line_number);
         } else {
             state = next_state;
-            if (!isspace(next_char)) {
+            if (!isspace(next_char) && next_char != COMMENT_CHAR && state != COMMENT_STATE) {
                 string += next_char;
             }
         }
@@ -42,6 +44,14 @@ Token FiniteAutomatonDriver::read()
     } while (file >> std::noskipws >> next_char);
     
     return EndOfFileToken(line_number);
+}
+
+void FiniteAutomatonDriver::check_for_invalid_character(int state)
+{
+    if (StateTransitionTable::is_invalid_char(next_char) && state != COMMENT_STATE) {
+        StateTransitionTable::print_invalid_char_error(next_char, line_number);
+        exit(1);
+    }
 }
 
 void FiniteAutomatonDriver::check_for_table_error(int state)

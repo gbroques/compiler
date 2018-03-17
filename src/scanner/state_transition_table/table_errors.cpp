@@ -3,6 +3,7 @@
 bool is_table_error(int num)
 {
     switch (num) {
+        case InvalidCharacter:
         case InvalidTransition:
         case MaxIntegerLength:
         case MaxIdentifierLength:

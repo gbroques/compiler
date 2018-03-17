@@ -29,6 +29,22 @@ int StateTransitionTable::get_column_index(char character)
     }
 }
 
+bool StateTransitionTable::is_invalid_char(char character)
+{
+    return !is_valid_char(character);
+}
+
+bool StateTransitionTable::is_valid_char(char character)
+{
+    return (IntegerToken::is_integer(character) ||
+            COMMENT_CHAR == character ||
+            OperatorToken::is_operator(character) ||
+            DelimeterToken::is_delimeter(character) ||
+            isalpha(character) ||
+            EndOfFileToken::is_eof(character) ||
+            isspace(character));
+}
+
 bool StateTransitionTable::is_intermediate_state(int state)
 {
     return !is_final_state(state);
@@ -41,15 +57,32 @@ bool StateTransitionTable::is_final_state(int state)
 
 void StateTransitionTable::print_error(int error, int line_number)
 {
-    std::string message = get_error_message(error);
+    std::string message = get_base_error_message();
+    message.append(get_error_message(error));
     message.append(" on line ");
-    std::cerr << "Scanner Error: " << message << line_number << std::endl;
+    std::cerr << message << line_number << std::endl;
+}
+
+
+void StateTransitionTable::print_invalid_char_error(char character, int line_number)
+{
+    std::string message = get_base_error_message();
+    message.append(get_error_message(InvalidCharacter));
+    std::cerr << message << " " << character << " on line " << line_number << std::endl;
+}
+
+std::string StateTransitionTable::get_base_error_message()
+{
+    return "Scanner Error: ";
 }
 
 std::string StateTransitionTable::get_error_message(int error)
 {
     std::string message;
     switch (error) {
+        case InvalidCharacter:
+            message = "Invalid Character";
+            break;
         case InvalidTransition:
             message = "Invalid transition";
             break;
@@ -84,7 +117,7 @@ Token StateTransitionTable::get_token(int state, std::string string, int line_nu
 }
 
 const std::vector<std::vector<int>> StateTransitionTable::table = {
-    {1, 9, 10, 11, 12, InvalidTransition, EndOfFileTokenId, 0},
+    {1, COMMENT_STATE, 10, 11, 12, InvalidTransition, EndOfFileTokenId, 0},
     {2, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
     {3, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
     {4, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
@@ -93,7 +126,7 @@ const std::vector<std::vector<int>> StateTransitionTable::table = {
     {7, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
     {8, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
     {MaxIntegerLength, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
-    {9, 0, 9, 9, 9, 9, 9, 9},
+    {COMMENT_STATE, 0, COMMENT_STATE, COMMENT_STATE, COMMENT_STATE, COMMENT_STATE, COMMENT_STATE, COMMENT_STATE},
     {OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId},
     {DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId},
     {13, IdentifierTokenId, IdentifierTokenId, IdentifierTokenId, 13, 13, IdentifierTokenId, IdentifierTokenId},

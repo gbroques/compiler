@@ -16,6 +16,7 @@ class FiniteAutomatonDriver
         char next_char;
         std::ifstream open_file(std::string filename);
         void close_file();
+        void check_for_invalid_character(int state);
         void check_for_table_error(int state);
 };
 
