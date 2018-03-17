@@ -29,7 +29,7 @@ CXXFLAGS=-g -std=c++11 -Wall
 # -Wall       Enable all warning flags
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+	$(CXX) $(OBJS) -o $(TARGET_EXEC) $(LDFLAGS)
 
 # assembly
 $(BUILD_DIR)/%.s.o: %.s
@@ -50,7 +50,7 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 .PHONY: clean
 
 clean:
-	$(RM) -r $(BUILD_DIR)
+	$(RM) -r $(BUILD_DIR) $(TARGET_EXEC)
 
 -include $(DEPS)
 
