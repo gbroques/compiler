@@ -12,9 +12,14 @@ To edit import `deterministic-finite-automaton.json` at https://merfoo.github.io
 
 
 ## State Transition Table
+
+The following table is located at `src/scanner/state_transition_table/state_transition_table.cpp`.
+
+The function corresponding to the finite automaton driver is `FiniteAutomatonDriver::read()` in `src/scanner/scanner.cpp`.
+
 | 0-9         | !            | + - * / < > = | : # . ( ) , { } ; [ ] | a-z         | A-Z         | EoF          | White Space  | 
 |-------------|--------------|---------------|-----------------------|-------------|-------------|--------------|--------------| 
-| 1           | 9            | 10            | 11                    | 12          |             | EoFTk        | 0            | 
+| 1           | 9            | 10            | 11                    | 12          | Error       | EoFTk        | 0            | 
 | 3           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
 | 2           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
 | 4           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
