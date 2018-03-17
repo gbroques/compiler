@@ -4,6 +4,9 @@
 
 From [Wikipedia](https://en.wikipedia.org/wiki/Lexical_analysis).
 
+## How to Run
+1. `make`
+2. `./scanner filename`
 
 ## Deterministic Finite Automaton
 ![Deterministic Finite Automaton](assets/deterministic-finite-automaton.png)
