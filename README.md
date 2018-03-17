@@ -11,7 +11,7 @@ From [Wikipedia](https://en.wikipedia.org/wiki/Lexical_analysis).
 ## Deterministic Finite Automaton
 ![Deterministic Finite Automaton](assets/deterministic-finite-automaton.png)
 
-To edit import `deterministic-finite-automaton.json` at https://merfoo.github.io/fsm/
+To edit import `assets/deterministic-finite-automaton.json` at https://merfoo.github.io/fsm/
 
 
 ## State Transition Table
@@ -19,6 +19,8 @@ To edit import `deterministic-finite-automaton.json` at https://merfoo.github.io
 The following table is located at `src/scanner/state_transition_table/state_transition_table.cpp`.
 
 The function corresponding to the finite automaton driver is `FiniteAutomatonDriver::read()` in `src/scanner/scanner.cpp`.
+
+To edit import `assets/state-transition-table.csv` into your favorite spreadsheet program.
 
 | 0-9         | !            | + - * / < > = | : # . ( ) , { } ; [ ] | a-z         | A-Z         | EoF          | White Space  | 
 |-------------|--------------|---------------|-----------------------|-------------|-------------|--------------|--------------| 
