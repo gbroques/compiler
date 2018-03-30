@@ -7,6 +7,7 @@
 class IdentifierToken : public Token
 {
     public:
+        static bool is_identifier(Token token);
         IdentifierToken(std::string value, int line_number);
 };
 

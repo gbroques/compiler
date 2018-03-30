@@ -14,10 +14,12 @@ class Scanner
         std::ifstream file;
         int line_number;
         char next_char;
+        bool is_eof_reached;
         std::ifstream open_file(std::string filename);
         void close_file();
         void check_for_invalid_character(int state);
         void check_for_table_error(int state);
+        void check_for_eof();
 };
 
 #endif

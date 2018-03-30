@@ -1,12 +1,11 @@
-# Scanner
+# Compiler
 
-> The first stage of compiling, the scanner, is usually based on a finite-state machine (FSM). It has encoded within it information on the possible sequences of characters that can be contained within any of the tokens it handles (individual instances of these character sequences are termed lexemes). For example, an integer token may contain any sequence of numerical digit characters. In many cases, the first non-whitespace character can be used to deduce the kind of token that follows and subsequent input characters are then processed one at a time until reaching a character that is not in the set of characters acceptable for that token (this is termed the maximal munch, or longest match, rule). In some languages, the lexeme creation rules are more complex and may involve backtracking over previously read characters. For example, in C, one 'L' character is not enough to distinguish between an identifier that begins with 'L' and a wide-character string literal.
-
-From [Wikipedia](https://en.wikipedia.org/wiki/Lexical_analysis).
+1. Scanner - Converts a stream of characters into tokens
+2. Parser - Converts the tokens into a parse tree
 
 ## How to Run
 1. `make`
-2. `./scanner filename`
+2. `./frontEnd filename`
 
 ## Deterministic Finite Automaton
 ![Deterministic Finite Automaton](assets/deterministic-finite-automaton.png)
@@ -24,24 +23,55 @@ To edit import `assets/state-transition-table.csv` into your favorite spreadshee
 
 | 0-9         | !            | + - * / < > = | : # . ( ) , { } ; [ ] | a-z         | A-Z         | EoF          | White Space  | 
 |-------------|--------------|---------------|-----------------------|-------------|-------------|--------------|--------------| 
-| 1           | 9            | 10            | 11                    | 12          | Error       | EoFTk        | 0            | 
-| 3           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
-| 2           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
-| 4           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
-| 5           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
-| 6           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
-| 7           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
-| 8           | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
-| Error       | IntegerTk    | IntegerTk     | IntegerTk             | IntegerTk   | IntegerTk   | IntegerTk    | IntegerTk    | 
+| 1           | 9            | 10            | 11                    | 12          | Error       | EoF          | 0            | 
+| 3           | Integer      | Integer       | Integer               | Integer     | Integer     | Integer      | Integer      | 
+| 2           | Integer      | Integer       | Integer               | Integer     | Integer     | Integer      | Integer      | 
+| 4           | Integer      | Integer       | Integer               | Integer     | Integer     | Integer      | Integer      | 
+| 5           | Integer      | Integer       | Integer               | Integer     | Integer     | Integer      | Integer      | 
+| 6           | Integer      | Integer       | Integer               | Integer     | Integer     | Integer      | Integer      | 
+| 7           | Integer      | Integer       | Integer               | Integer     | Integer     | Integer      | Integer      | 
+| 8           | Integer      | Integer       | Integer               | Integer     | Integer     | Integer      | Integer      | 
+| Error       | Integer      | Integer       | Integer               | Integer     | Integer     | Integer      | Integer      | 
 | 9           | 0            | 9             | 9                     | 9           | 9           | 9            | 9            | 
-| OperatorTk  | OperatorTk   | OperatorTk    | OperatorTk            | OperatorTk  | OperatorTk  | OperatorTk   | OperatorTk   | 
-| DelimeterTk | DelimeterTk  | DelimeterTk   | DelimeterTk           | DelimeterTk | DelimeterTk | DelimeterTk  | DelimeterTk  | 
-| 13          | IdentifierTk | IdentifierTk  | IdentifierTk          | 13          | 13          | IdentifierTk | IdentifierTk | 
-| 14          | IdentifierTk | IdentifierTk  | IdentifierTk          | 14          | 14          | IdentifierTk | IdentifierTk | 
-| 15          | IdentifierTk | IdentifierTk  | IdentifierTk          | 15          | 15          | IdentifierTk | IdentifierTk | 
-| 16          | IdentifierTk | IdentifierTk  | IdentifierTk          | 16          | 16          | IdentifierTk | IdentifierTk | 
-| 17          | IdentifierTk | IdentifierTk  | IdentifierTk          | 17          | 17          | IdentifierTk | IdentifierTk | 
-| 18          | IdentifierTk | IdentifierTk  | IdentifierTk          | 18          | 18          | IdentifierTk | IdentifierTk | 
-| 19          | IdentifierTk | IdentifierTk  | IdentifierTk          | 19          | 19          | IdentifierTk | IdentifierTk | 
-| Error       | IdentifierTk | IdentifierTk  | IdentifierTk          | Error       | Error       | IdentifierTk | IdentifierTk | 
+| Operator    | Operator     | Operator      | Operator              | Operator    | Operator    | Operator     | Operator     | 
+| Delimiter   | Delimiter    | Delimiter     | Delimiter             | Delimiter   | Delimiter   | Delimiter    | Delimiter    | 
+| 13          | Identifier   | Identifier    | Identifier            | 13          | 13          | Identifier   | Identifier   | 
+| 14          | Identifier   | Identifier    | Identifier            | 14          | 14          | Identifier   | Identifier   | 
+| 15          | Identifier   | Identifier    | Identifier            | 15          | 15          | Identifier   | Identifier   | 
+| 16          | Identifier   | Identifier    | Identifier            | 16          | 16          | Identifier   | Identifier   | 
+| 17          | Identifier   | Identifier    | Identifier            | 17          | 17          | Identifier   | Identifier   | 
+| 18          | Identifier   | Identifier    | Identifier            | 18          | 18          | Identifier   | Identifier   | 
+| 19          | Identifier   | Identifier    | Identifier            | 19          | 19          | Identifier   | Identifier   | 
+| Error       | Identifier   | Identifier    | Identifier            | Error       | Error       | Identifier   | Identifier   | 
 
+## BNF
+
+<S> -> **program** <vars> <block>
+
+<block> -> **start** <vars> <stats> **end**
+
+<vars> -> **var** **Identifier** <vars> | **empty**
+
+<expr> -> <H> **+** <expr> | <H> **-** <expr> | <H> **/** <expr> | <H> **\*** <expr> | <H>
+
+<H> -> **#** <R> | <R>
+
+<R> -> ( <expr> ) | **Identifier** | **Integer**
+
+<stats> -> <stat> <m_stat>
+
+<m_stat> -> <stats> | **empty**
+
+<stat> -> <in> **,** | <out> **,** | <block> **,** | <ifstat> **,** | <loop> **,** | <assign> **,**
+
+<in> -> **read** **Identifier**
+
+<out> -> **print** <expr>
+
+<ifstat> -> **if** **(** <expr> <O> <expr> **)** <stat>
+
+<loop> -> **iter** **(** <expr> <O> <expr> **)** <stat>
+
+<assign> -> **let** **Identifier** **=** <expr>
+
+<O> -> **<** | **>** | **:**

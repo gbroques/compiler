@@ -16,7 +16,7 @@ int StateTransitionTable::get_column_index(char character)
         return 1;
     } else if (OperatorToken::is_operator(character)) {
         return 2;
-    } else if (DelimeterToken::is_delimeter(character)) {
+    } else if (DelimiterToken::is_delimiter(character)) {
         return 3;
     } else if (islower(character) && isalpha(character)) {
         return 4;
@@ -39,7 +39,7 @@ bool StateTransitionTable::is_valid_char(char character)
     return (IntegerToken::is_integer(character) ||
             COMMENT_CHAR == character ||
             OperatorToken::is_operator(character) ||
-            DelimeterToken::is_delimeter(character) ||
+            DelimiterToken::is_delimiter(character) ||
             isalpha(character) ||
             EndOfFileToken::is_eof(character) ||
             isspace(character));
@@ -99,8 +99,8 @@ std::string StateTransitionTable::get_error_message(int error)
 Token StateTransitionTable::get_token(int state, std::string string, int line_number)
 {
     switch (state) {
-        case DelimeterTokenId:
-            return DelimeterToken(string, line_number);
+        case DelimiterTokenId:
+            return DelimiterToken(string, line_number);
         case EndOfFileTokenId:
             return EndOfFileToken(line_number);
         case IdentifierTokenId:
@@ -128,7 +128,7 @@ const std::vector<std::vector<int>> StateTransitionTable::table = {
     {MaxIntegerLength, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId, IntegerTokenId},
     {COMMENT_STATE, 0, COMMENT_STATE, COMMENT_STATE, COMMENT_STATE, COMMENT_STATE, COMMENT_STATE, COMMENT_STATE},
     {OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId, OperatorTokenId},
-    {DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId, DelimeterTokenId},
+    {DelimiterTokenId, DelimiterTokenId, DelimiterTokenId, DelimiterTokenId, DelimiterTokenId, DelimiterTokenId, DelimiterTokenId, DelimiterTokenId},
     {13, IdentifierTokenId, IdentifierTokenId, IdentifierTokenId, 13, 13, IdentifierTokenId, IdentifierTokenId},
     {14, IdentifierTokenId, IdentifierTokenId, IdentifierTokenId, 14, 14, IdentifierTokenId, IdentifierTokenId},
     {15, IdentifierTokenId, IdentifierTokenId, IdentifierTokenId, 15, 15, IdentifierTokenId, IdentifierTokenId},

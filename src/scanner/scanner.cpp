@@ -9,6 +9,7 @@ Scanner::Scanner(std::string filename)
     file = open_file(filename);
     line_number = 1;
     next_char = ' ';
+    is_eof_reached = false;
 }
 
 Scanner::~Scanner()
@@ -16,13 +17,31 @@ Scanner::~Scanner()
     close_file();
 }
 
+
+std::ifstream Scanner::open_file(std::string filename)
+{
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Error: Cannot open file '" << filename << "'.\n";
+        exit(1);
+    }
+    return file;
+}
+
+void Scanner::close_file()
+{
+    file.close();
+}
+
 Token Scanner::read()
 {
     int state = 0;
     int next_state = StateTransitionTable::get_next_state(state, next_char);
     std::string string = "";
-    
+
     do {
+        check_for_eof();
+        
         check_for_invalid_character(state);
 
         next_state = StateTransitionTable::get_next_state(state, next_char);
@@ -40,9 +59,8 @@ Token Scanner::read()
         if (next_char == '\n') {
             line_number++;
         }
-        
-    } while (file >> std::noskipws >> next_char);
-    
+    } while (file >> std::noskipws >> next_char || !is_eof_reached);
+
     return EndOfFileToken(line_number);
 }
 
@@ -62,17 +80,16 @@ void Scanner::check_for_table_error(int state)
     }
 }
 
-std::ifstream Scanner::open_file(std::string filename)
+/**
+ * Since we can't read in an EOF character,
+ * we need to read in some last character to
+ * properly recognize tokens at the end of a file.
+ * The space ' ' character is arbitrary.
+ */
+void Scanner::check_for_eof()
 {
-    std::ifstream file(filename);
-    if (!file) {
-        std::cerr << "Error: Cannot open file '" << filename << "'.\n";
-        exit(1);
+    if (file.eof()) {
+        next_char = ' ';
+        is_eof_reached = true;
     }
-    return file;
-}
-
-void Scanner::close_file()
-{
-    file.close();
 }

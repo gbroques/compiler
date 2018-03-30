@@ -7,7 +7,7 @@
 #
 #  Source: https://spin.atomicobject.com/2016/08/26/makefile-c-projects/
 
-TARGET_EXEC ?= scanner
+TARGET_EXEC ?= frontEnd
 
 BUILD_DIR ?= ./build
 

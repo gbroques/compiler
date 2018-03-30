@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "test_scanner.h"
 #include "timer.h"
+#include "parser/parser.h"
 
 std::string get_filename(int argc, char** argv);
 
@@ -14,7 +15,10 @@ int main(int argc, char** argv)
 
     std::string filename = get_filename(argc, argv);
     
-    test_scanner(filename);
+    Parser parser(filename);
+    parser.parse();
+
+    std::cout << "Parse OK\n";
 
 
     timer_.stop("Timer stopped.");

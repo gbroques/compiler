@@ -4,7 +4,7 @@
 #include <string>
 
 typedef enum {
-    DelimeterTokenId = 1000,
+    DelimiterTokenId = 1000,
     EndOfFileTokenId = 1001,
     IdentifierTokenId = 1002,
     IntegerTokenId = 1003,
