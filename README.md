@@ -46,32 +46,32 @@ To edit import `assets/state-transition-table.csv` into your favorite spreadshee
 
 ## BNF
 
-<S> -> **program** <vars> <block>
+\<S> -> **program** \<vars> \<block>
 
-<block> -> **start** <vars> <stats> **end**
+\<block> -> **start** \<vars> \<stats> **end**
 
-<vars> -> **var** **Identifier** <vars> | **empty**
+\<vars> -> **var** **Identifier** \<vars> | **empty**
 
-<expr> -> <H> **+** <expr> | <H> **-** <expr> | <H> **/** <expr> | <H> **\*** <expr> | <H>
+\<expr> -> \<H> **+** \<expr> | \<H> **-** \<expr> | \<H> **/** \<expr> | \<H> **\*** \<expr> | \<H>
 
-<H> -> **#** <R> | <R>
+\<H> -> **#** \<R> | \<R>
 
-<R> -> ( <expr> ) | **Identifier** | **Integer**
+\<R> -> ( \<expr> ) | **Identifier** | **Integer**
 
-<stats> -> <stat> <m_stat>
+\<stats> -> \<stat> \<m_stat>
 
-<m_stat> -> <stats> | **empty**
+\<m_stat> -> \<stats> | **empty**
 
-<stat> -> <in> **,** | <out> **,** | <block> **,** | <ifstat> **,** | <loop> **,** | <assign> **,**
+\<stat> -> \<in> **,** | \<out> **,** | \<block> **,** | \<ifstat> **,** | \<loop> **,** | \<assign> **,**
 
-<in> -> **read** **Identifier**
+\<in> -> **read** **Identifier**
 
-<out> -> **print** <expr>
+\<out> -> **print** \<expr>
 
-<ifstat> -> **if** **(** <expr> <O> <expr> **)** <stat>
+\<ifstat> -> **if** **(** \<expr> \<O> \<expr> **)** \<stat>
 
-<loop> -> **iter** **(** <expr> <O> <expr> **)** <stat>
+\<loop> -> **iter** **(** \<expr> \<O> \<expr> **)** \<stat>
 
-<assign> -> **let** **Identifier** **=** <expr>
+\<assign> -> **let** **Identifier** **=** \<expr>
 
-<O> -> **<** | **>** | **:**
+\<O> -> **<** | **>** | **:**
