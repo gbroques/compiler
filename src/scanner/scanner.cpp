@@ -17,7 +17,6 @@ Scanner::~Scanner()
     close_file();
 }
 
-
 std::ifstream Scanner::open_file(std::string filename)
 {
     std::ifstream file(filename);

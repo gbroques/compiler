@@ -1,8 +1,6 @@
 .vscode
 *.o
 *.gch
-P1_test*.txt
+P2_test*.txt
 build
-scanner
-!/**/scanner/
 frontEnd

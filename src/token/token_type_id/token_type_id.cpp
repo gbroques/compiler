@@ -31,7 +31,7 @@ std::string get_token_type_name(int id)
             return "KeywordToken";
         case OperatorTokenId:
             return "OperatorToken";
-        case DefaultTokenTypeId:
+        default:
             return "DefaultToken";
     }  
 }

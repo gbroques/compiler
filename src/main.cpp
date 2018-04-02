@@ -2,7 +2,6 @@
 #include <string>
 #include <fstream>
 #include <stdlib.h>
-#include "test_scanner.h"
 #include "timer.h"
 #include "parser/parser.h"
 
@@ -16,10 +15,11 @@ int main(int argc, char** argv)
     std::string filename = get_filename(argc, argv);
     
     Parser parser(filename);
-    parser.parse();
+    Node* parseTree = parser.parse();
 
-    std::cout << "Parse OK\n";
+    Node::print(parseTree);
 
+    Node::destroy(parseTree);
 
     timer_.stop("Timer stopped.");
 

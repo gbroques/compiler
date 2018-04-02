@@ -27,6 +27,7 @@ int StateTransitionTable::get_column_index(char character)
     } else if (isspace(character)) {
         return 7;
     }
+    return -1;
 }
 
 bool StateTransitionTable::is_invalid_char(char character)
@@ -113,6 +114,9 @@ Token StateTransitionTable::get_token(int state, std::string string, int line_nu
             return IntegerToken(string, line_number);
         case OperatorTokenId:
             return OperatorToken(string, line_number);
+        default:
+            std::string default_token_name = get_token_type_name(DefaultTokenTypeId);
+            return Token(DefaultTokenTypeId, default_token_name, line_number);
     }
 }
 
