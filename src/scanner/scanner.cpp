@@ -6,7 +6,8 @@
 
 Scanner::Scanner(std::string filename)
 {
-    file = open_file(filename);
+    file.open(filename);
+    check_file(file, filename);
     line_number = 1;
     next_char = ' ';
     is_eof_reached = false;
@@ -17,14 +18,12 @@ Scanner::~Scanner()
     close_file();
 }
 
-std::ifstream Scanner::open_file(std::string filename)
+void Scanner::check_file(std::ifstream& file, std::string filename)
 {
-    std::ifstream file(filename);
     if (!file) {
         std::cerr << "Error: Cannot open file '" << filename << "'.\n";
         exit(1);
     }
-    return file;
 }
 
 void Scanner::close_file()
