@@ -21,11 +21,11 @@ void SemanticAnalyzer::traverse(Node* node)
 
     check_for_variables(node);
     
+    traverse_children(node);
+
     if (introduces_new_scope(node)) {
         var_stack.pop();
     }
-
-    traverse_children(node);
 }
 
 void SemanticAnalyzer::check_for_variables(Node* node)
