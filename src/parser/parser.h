@@ -6,6 +6,11 @@
 #include "../token/token.h"
 #include "node/node.h"
 
+const std::string BLOCK = "block";
+const std::string IFSTAT = "ifstat";
+const std::string LOOP = "loop";
+const std::string VARS = "vars";
+
 class Parser
 {
     public:
@@ -34,7 +39,7 @@ class Parser
         Node* assign(int level);
         Node* O(int level);
         bool is_O_token(Token token);
-        void error();
+        void print_error_and_exit();
         void check_for_comma_token();
 };
 

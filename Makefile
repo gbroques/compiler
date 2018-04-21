@@ -7,7 +7,7 @@
 #
 #  Source: https://spin.atomicobject.com/2016/08/26/makefile-c-projects/
 
-TARGET_EXEC ?= frontEnd
+TARGET_EXEC ?= statSem
 
 BUILD_DIR ?= ./build
 

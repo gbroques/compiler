@@ -21,7 +21,7 @@ Node* Parser::parse()
     if (token.is_eof()) {
         return root;
     }
-    error();
+    print_error_and_exit();
 }
 
 /**
@@ -37,7 +37,7 @@ Node* Parser::S()
         node->append_child(block(level));
         return node;
     }
-    error();
+    print_error_and_exit();
 }
 
 /**
@@ -47,7 +47,7 @@ Node* Parser::block(int level)
 {
     level++;
     if (KeywordToken::is_start_token(token)) {
-        Node* node = Node::of("block", level);
+        Node* node = Node::of(BLOCK, level);
         token = scanner->read();
         node->append_child(vars(level));
         node->append_child(stats(level));
@@ -56,7 +56,7 @@ Node* Parser::block(int level)
             return node;
         }
     }
-    error();
+    print_error_and_exit();
 }
 
 /**
@@ -66,7 +66,7 @@ Node* Parser::vars(int level)
 {
     if (KeywordToken::is_var_token(token)) {
         level++;
-        Node* node = Node::of("vars", level);
+        Node* node = Node::of(VARS, level);
         token = scanner->read();
         if (token.is_identifier()) {
             node->append_token(token);
@@ -74,7 +74,7 @@ Node* Parser::vars(int level)
             node->append_child(vars(level));
             return node;
         } else {
-            error();
+            print_error_and_exit();
         }
     } else {
         return NULL;
@@ -156,7 +156,7 @@ Node* Parser::R(int level)
         token = scanner->read();
         return node;
     }
-    error();
+    print_error_and_exit();
 }
 
 /**
@@ -186,7 +186,8 @@ Node* Parser::m_stat(int level)
     }
 }
 
-bool Parser::is_first_of_stats(Token token) {
+bool Parser::is_first_of_stats(Token token)
+{
     return KeywordToken::is_read_token(token) ||
            KeywordToken::is_print_token(token) ||
            KeywordToken::is_start_token(token) ||
@@ -227,14 +228,15 @@ Node* Parser::stat(int level)
         check_for_comma_token();
         return node;
     }
-    error();
+    print_error_and_exit();
 }
 
-void Parser::check_for_comma_token() {
+void Parser::check_for_comma_token()
+{
     if (DelimiterToken::is_comma_token(token)) {
         token = scanner->read();
     } else {
-        error();
+        print_error_and_exit();
     }
 }
 
@@ -253,7 +255,7 @@ Node* Parser::in(int level)
             return node;
         }
     }
-    error();
+    print_error_and_exit();
 }
 
 /**
@@ -268,7 +270,7 @@ Node* Parser::out(int level)
         node->append_child(expr(level));
         return node;
     }
-    error();
+    print_error_and_exit();
 }
 
 /**
@@ -278,7 +280,7 @@ Node* Parser::ifstat(int level)
 {
     level++;
     if (KeywordToken::is_if_token(token)) {
-        Node* node = Node::of("ifstat", level);
+        Node* node = Node::of(IFSTAT, level);
         token = scanner->read();
         if (DelimiterToken::is_left_parentheses_token(token)) {
             token = scanner->read();
@@ -292,7 +294,7 @@ Node* Parser::ifstat(int level)
             }
         }
     }
-    error();
+    print_error_and_exit();
 }
 
 /**
@@ -302,7 +304,7 @@ Node* Parser::loop(int level)
 {
     level++;
     if (KeywordToken::is_iter_token(token)) {
-        Node* node = Node::of("loop", level);
+        Node* node = Node::of(LOOP, level);
         token = scanner->read();
         if (DelimiterToken::is_left_parentheses_token(token)) {
             token = scanner->read();
@@ -316,7 +318,7 @@ Node* Parser::loop(int level)
             }
         }
     }
-    error();
+    print_error_and_exit();
 }
 
 /**
@@ -338,7 +340,7 @@ Node* Parser::assign(int level)
             }
         }
     }
-    error();
+    print_error_and_exit();
 }
 
 /**
@@ -353,17 +355,18 @@ Node* Parser::O(int level)
         token = scanner->read();
         return node;
     }
-    error();
+    print_error_and_exit();
 }
 
-bool Parser::is_O_token(Token token) {
+bool Parser::is_O_token(Token token)
+{
     return OperatorToken::is_less_than_token(token) ||
            OperatorToken::is_greater_than_token(token) ||
            DelimiterToken::is_colon_token(token);
 }
 
-void Parser::error()
+void Parser::print_error_and_exit()
 {
-    std::cerr << "Parser error: " << token << std::endl;
+    std::cerr << "Parser print_error_and_exit: " << token << std::endl;
     exit(1);
 }

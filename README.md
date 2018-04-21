@@ -75,3 +75,11 @@ To edit import `assets/state-transition-table.csv` into your favorite spreadshee
 \<assign> -> **let** **Identifier** **=** \<expr>
 
 \<O> -> **<** | **>** | **:**
+
+## Static Semantics
+
+The only static semantics imposed by the compiler are proper use of variables. Before using a variable, you must first declare it using the **var** keyword.
+
+In our language scopes are imposed by blocks denoted by **start** and **end**, conditionals denoted by **if**, and loops denoted by **iter**.
+
+For our compiler, we implement **local scoping** in contrast to global scoping.

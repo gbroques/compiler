@@ -1,6 +1,6 @@
 .vscode
 *.o
 *.gch
-P2_test*.txt
+test*.txt
 build
-frontEnd
+statSem

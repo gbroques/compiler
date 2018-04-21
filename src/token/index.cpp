@@ -45,15 +45,23 @@ bool Token::is_integer()
     return this->typeId == IntegerTokenId;
 }
 
-std::ostream& operator<<(std::ostream &stream, const Token &token) {
+std::ostream& operator<<(std::ostream &stream, const Token &token)
+{
     std::string token_type = get_token_type_name(token.typeId);
     return stream << token_type << "(" << token.value << ") on line " << token.line_number;
 }
 
-bool operator==(const Token &t1, const Token &t2) {
+bool operator==(const Token &t1, const Token &t2)
+{
     return t1.typeId == t2.typeId && t1.value == t2.value;
 }
 
-bool operator!=(const Token &t1, const Token &t2) {
+bool operator!=(const Token &t1, const Token &t2)
+{
     return t1.typeId != t2.typeId || t1.value != t2.value;
+}
+
+bool operator<(const Token &t1, const Token &t2)
+{
+    return t1.value < t2.value;
 }

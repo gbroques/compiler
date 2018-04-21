@@ -23,6 +23,7 @@ class Token
         friend std::ostream& operator<<(std::ostream&, const Token&);
         friend bool operator==(const Token&, const Token&);
         friend bool operator!=(const Token&, const Token&);
+        friend bool operator<(const Token&, const Token&);
 };
 
 #endif
