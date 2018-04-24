@@ -11,6 +11,7 @@
 class SemanticAnalyzer
 {
     public:
+        SemanticAnalyzer() {}
         void analyze(Node* parse_tree);
 
     private:

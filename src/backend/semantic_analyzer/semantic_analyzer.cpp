@@ -36,14 +36,14 @@ void SemanticAnalyzer::check_for_variables(Node* node)
         if (contains_variable_declarations(node)) {
             int location = var_stack.find(id_token);
             if (location != -1) {
-                std::string msg = "Undeclared variable";
+                std::string msg = "Duplicate variable declaration";
                 print_error_and_exit(msg, id_token);
             }
             var_stack.insert(id_token);
         } else {
             int location = var_stack.find(id_token);
             if (location == -1) {
-                std::string msg = "Duplicate variable declaration";
+                std::string msg = "Undeclared variable";
                 print_error_and_exit(msg, id_token);
             }
         }

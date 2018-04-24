@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "timer.h"
 #include "parser/parser.h"
-#include "backend/semantic_analyzer/semantic_analyzer.h"
+#include "backend/backend.h"
 
 std::string get_filename(int argc, char** argv);
 
@@ -17,9 +17,10 @@ int main(int argc, char** argv)
     
     Parser parser(filename);
     Node* parse_tree = parser.parse();
+    
+    Backend backend = Backend();
+    backend.traverse(parse_tree);
 
-    SemanticAnalyzer semantic_analyzer = SemanticAnalyzer();
-    semantic_analyzer.analyze(parse_tree);
 
     Node::destroy(parse_tree);
 
