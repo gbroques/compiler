@@ -36,27 +36,23 @@ void SemanticAnalyzer::check_for_variables(Node* node)
         if (contains_variable_declarations(node)) {
             int location = var_stack.find(id_token);
             if (location != -1) {
-                print_duplicate_declaration_error_and_exit(id_token);
+                std::string msg = "Undeclared variable";
+                print_error_and_exit(msg, id_token);
             }
             var_stack.insert(id_token);
         } else {
             int location = var_stack.find(id_token);
             if (location == -1) {
-                print_undeclared_error_and_exit(id_token);
+                std::string msg = "Duplicate variable declaration";
+                print_error_and_exit(msg, id_token);
             }
         }
     }
 }
 
-void SemanticAnalyzer::print_duplicate_declaration_error_and_exit(Token token)
+void SemanticAnalyzer::print_error_and_exit(std::string msg, Token token)
 {
-    std::cerr << "Duplicate variable declaration " << token << std::endl;
-    exit(EXIT_FAILURE);
-}
-
-void SemanticAnalyzer::print_undeclared_error_and_exit(Token token)
-{
-    std::cerr << token << " undeclared. First use in this scope.\n";
+    std::cerr << msg << " " << token << std::endl;
     exit(EXIT_FAILURE);
 }
 
