@@ -33,6 +33,8 @@ class Backend
         void check_for_assignments(Node* node, int location);
         void check_for_input_statements(Node* node, int location);
         void check_for_r_letter(Node* node);
+        void check_for_expr(Node* node);
+        std::string get_operation(Token token);
         void check_for_print_statements(Node* node);
 };
 
