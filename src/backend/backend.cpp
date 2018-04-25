@@ -4,11 +4,6 @@
 const std::set<std::string> Backend::new_scope_labels = {BLOCK, IFSTAT, LOOP};
 const std::set<std::string> Backend::labels_containing_expr = {ASSIGN, OUT};
 
-Backend::Backend()
-{
-    var_count = 0;
-}
-
 void Backend::traverse(Node* node)
 {
     if (node == NULL) {
@@ -32,10 +27,10 @@ void Backend::traverse(Node* node)
     }
 
     if (introduces_new_scope(node)) {
-        for (int i = 0; i < var_count; i++) {
+        int num_vars_in_current_scope = var_stack.num_vars_in_current_scope();
+        for (int i = 0; i < num_vars_in_current_scope; i++) {
             code_generator.print_to_target(POP);
         }
-        var_count = 0;
         var_stack.pop();
         code_generator.print_to_target(POP);
     }
@@ -59,7 +54,6 @@ void Backend::check_for_variables(Node* node)
             }
             code_generator.print_to_target(PUSH);
             var_stack.insert(id_token);
-            var_count++;
         } else {
             int location = var_stack.find(id_token);
             if (location == -1) {

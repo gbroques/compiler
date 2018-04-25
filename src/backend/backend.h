@@ -15,13 +15,11 @@
 class Backend
 {
     public:
-        Backend();
         void traverse(Node* node);
 
     private:
         VarStack var_stack;
         CodeGenerator code_generator;
-        int var_count;  // Keep track of the number of variables in a scope
         const static std::set<std::string> new_scope_labels;
         const static std::set<std::string> labels_containing_expr;
         void check_for_variables(Node* node);

@@ -15,6 +15,7 @@ class VarStack
         void insert(Token var);
         void erase(Token var);
         int find(Token var);
+        int num_vars_in_current_scope();
 
     private:
         std::deque<std::set<Token>> var_stack;

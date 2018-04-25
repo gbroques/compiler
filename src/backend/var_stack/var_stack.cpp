@@ -35,11 +35,20 @@ int VarStack::find(Token var)
 {
     int position_from_top_of_stack = 0;
     for (int i = var_stack.size() - 1; i >= 0; i--) {
-        int count = var_stack[i].count(var);
-        if (count > 0) {
-            return position_from_top_of_stack;
+        std::set<Token> tokens = var_stack[i];
+        for (auto token = tokens.rbegin(); token != tokens.rend(); ++token) {
+            if (var == *token) {
+                return position_from_top_of_stack;
+            }
+            position_from_top_of_stack++;
         }
         position_from_top_of_stack++;
     }
     return -1;
+}
+
+int VarStack::num_vars_in_current_scope()
+{
+    std::set<Token> current_scope = var_stack[var_stack.size() - 1];
+    return current_scope.size();
 }
