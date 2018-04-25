@@ -16,7 +16,11 @@ const std::string ADD = "ADD";
 const std::string SUB = "SUB";
 const std::string MULT = "MULT";
 const std::string DIV = "DIV";
+const std::string BREAK_ZERO_OR_POSITIVE = "BRZPOS";
+const std::string BREAK_ZERO_OR_NEGATIVE = "BRZNEG";
 
-const std::string T = "T";  // Prefix for temporary variables
+const std::string TEMP_VAR_PREFIX = "T";
+const std::string LABEL_PREFIX = "L";
+
 
 #endif

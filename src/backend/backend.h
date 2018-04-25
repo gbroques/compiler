@@ -26,6 +26,7 @@ class Backend
         void check_location(int location, std::string err_msg, Token token);
         void print_error_and_exit(std::string msg, Token token);
         void traverse_children(Node* node);
+        void traverse_child(Node* node, int child_index);
         static bool introduces_new_scope(Node* node);
         static bool contains_variable_declarations(Node* node);
         static bool contains_expression(Node* node);
@@ -36,6 +37,8 @@ class Backend
         void check_for_expr(Node* node);
         std::string get_operation(Token token);
         void check_for_print_statements(Node* node);
+        void check_for_ifstat(Node* node);
+        std::string get_break_condition(Token token);
 };
 
 #endif

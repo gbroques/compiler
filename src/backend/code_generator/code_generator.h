@@ -12,10 +12,13 @@ class CodeGenerator
         ~CodeGenerator();
         void print_to_target(std::string str);
         std::string get_temp_var();
+        std::string get_and_store_temp_var();
+        std::string get_label();
         void set_temp_vars_to_zero();
 
     private:
-        int temp_count;  // Keep track of the number of temporary variables
+        int temp_var_count;  // Keep track of the number of temporary variables
+        int label_count;
         std::ofstream target;
 };
 

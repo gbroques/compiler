@@ -2,7 +2,7 @@
 #include <iostream>
 
 const std::set<std::string> Backend::new_scope_labels = {BLOCK, IFSTAT, LOOP};
-const std::set<std::string> Backend::labels_containing_expr = {ASSIGN, OUT};
+const std::set<std::string> Backend::labels_containing_expr = {ASSIGN, OUT, IFSTAT};
 
 void Backend::traverse(Node* node)
 {
@@ -23,6 +23,7 @@ void Backend::traverse(Node* node)
 
     check_for_expr(node);
 
+    check_for_ifstat(node);
 
     if (does_not_contain_expression(node)) {
         traverse_children(node);
@@ -72,6 +73,13 @@ void Backend::print_error_and_exit(std::string msg, Token token)
 {
     std::cerr << msg << " " << token << std::endl;
     exit(EXIT_FAILURE);
+}
+
+
+void Backend::traverse_child(Node* node, int child_index)
+{
+    Node* child = node->children[child_index];
+    traverse_children(child);
 }
 
 void Backend::traverse_children(Node* node)
@@ -145,14 +153,11 @@ void Backend::check_for_r_letter(Node* node)
 void Backend::check_for_expr(Node* node)
 {
     if (node->label == EXPR and node->children.size() == 2) {
-        Node* right_child = node->children[1];
-        traverse_children(right_child);
+        traverse_child(node, 1);
 
-        std::string temp_var = code_generator.get_temp_var();
-        code_generator.print_to_target(STORE + " " + temp_var);
+        std::string temp_var = code_generator.get_and_store_temp_var();
 
-        Node* left_child = node->children[0];
-        traverse_children(left_child);
+        traverse_child(node, 0);
 
         Token operator_token = node->tokens[0];
         std::string operation = get_operation(operator_token);
@@ -161,16 +166,16 @@ void Backend::check_for_expr(Node* node)
     }
 }
 
-std::string Backend::get_operation(Token token)
+std::string Backend::get_operation(Token operator_token)
 {
     std::string operation;
-    if (OperatorToken::is_addition_token(token)) {
+    if (OperatorToken::is_addition_token(operator_token)) {
         operation = ADD;
-    } else if (OperatorToken::is_subtraction_token(token)) {
+    } else if (OperatorToken::is_subtraction_token(operator_token)) {
         operation = SUB;
-    } else if (OperatorToken::is_multiplication_token(token)) {
+    } else if (OperatorToken::is_multiplication_token(operator_token)) {
         operation = MULT;
-    } else if (OperatorToken::is_division_token(token)) {
+    } else if (OperatorToken::is_division_token(operator_token)) {
         operation = DIV;
     }
     return operation;
@@ -180,8 +185,43 @@ void Backend::check_for_print_statements(Node* node)
 {
     if (node->label == OUT) {
         traverse_children(node);
-        std::string temp_var = code_generator.get_temp_var();
-        code_generator.print_to_target(STORE + " " + temp_var);
+        std::string temp_var = code_generator.get_and_store_temp_var();
         code_generator.print_to_target(WRITE + " " + temp_var);
     }
+}
+
+void Backend::check_for_ifstat(Node* node)
+{
+    if (node->label == IFSTAT) {
+        traverse_child(node, 2);
+
+        std::string temp_var = code_generator.get_and_store_temp_var();
+
+        traverse_child(node, 0);
+
+        code_generator.print_to_target(SUB + " " + temp_var);
+
+        std::string label = code_generator.get_label();
+
+        Node* second_child = node->children[1];
+        Token relational_operator = second_child->tokens[0];
+
+        std::string break_condition = get_break_condition(relational_operator);
+        code_generator.print_to_target(break_condition + " " + label);
+
+        traverse_child(node, 3);
+
+        code_generator.print_to_target(label + ": NOOP");
+    }
+}
+
+std::string Backend::get_break_condition(Token relational_operator)
+{
+    std::string break_condition;
+    if (OperatorToken::is_less_than_token(relational_operator)) {
+        break_condition = BREAK_ZERO_OR_POSITIVE;
+    } else if (OperatorToken::is_greater_than_token(relational_operator)) {
+        break_condition = BREAK_ZERO_OR_NEGATIVE;
+    }
+    return break_condition;
 }
