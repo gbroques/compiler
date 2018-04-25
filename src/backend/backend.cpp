@@ -2,7 +2,7 @@
 #include <iostream>
 
 const std::set<std::string> Backend::new_scope_labels = {BLOCK, IFSTAT, LOOP};
-const std::set<std::string> Backend::labels_containing_expr = {ASSIGN, OUT, IFSTAT};
+const std::set<std::string> Backend::labels_containing_expr = {ASSIGN, OUT, IFSTAT, LOOP};
 
 void Backend::traverse(Node* node)
 {
@@ -10,7 +10,7 @@ void Backend::traverse(Node* node)
         return;
     }
 
-    if (introduces_new_scope(node)) {
+    if (introduces_new_scope(node)) {  // Entering a scope
         var_stack.push();
         code_generator.print_to_target(PUSH);
     }
@@ -25,11 +25,13 @@ void Backend::traverse(Node* node)
 
     check_for_ifstat(node);
 
+    check_for_loop(node);
+
     if (does_not_contain_expression(node)) {
         traverse_children(node);
     }
 
-    if (introduces_new_scope(node)) {
+    if (introduces_new_scope(node)) {  // Exiting a scope
         int num_vars_in_current_scope = var_stack.num_vars_in_current_scope();
         for (int i = 0; i < num_vars_in_current_scope; i++) {
             code_generator.print_to_target(POP);
@@ -193,27 +195,30 @@ void Backend::check_for_print_statements(Node* node)
 void Backend::check_for_ifstat(Node* node)
 {
     if (node->label == IFSTAT) {
-        traverse_child(node, 2);
-
-        std::string temp_var = code_generator.get_and_store_temp_var();
-
-        traverse_child(node, 0);
-
-        code_generator.print_to_target(SUB + " " + temp_var);
-
         std::string label = code_generator.get_label();
 
-        Node* second_child = node->children[1];
-        Token relational_operator = second_child->tokens[0];
+        evaluate_condition(node, label);
 
-        std::string break_condition = get_break_condition(relational_operator);
-        code_generator.print_to_target(break_condition + " " + label);
-
-        traverse_child(node, 3);
-
-        code_generator.print_to_target(label + ": NOOP");
+        code_generator.print_label(label);
     }
 }
+
+
+void Backend::check_for_loop(Node* node)
+{
+    if (node->label == LOOP) {
+        std::string loop_label = code_generator.get_label();
+        std::string out_label = code_generator.get_label();
+
+        code_generator.print_label(loop_label);
+
+        evaluate_condition(node, out_label);
+        
+        code_generator.print_to_target(BREAK + " " + loop_label);
+        code_generator.print_label(out_label);
+    }
+}
+
 
 std::string Backend::get_break_condition(Token relational_operator)
 {
@@ -224,4 +229,26 @@ std::string Backend::get_break_condition(Token relational_operator)
         break_condition = BREAK_ZERO_OR_NEGATIVE;
     }
     return break_condition;
+}
+
+/**
+ * Evaluates conditions for <ifstat> and <loop> nodes
+ */
+void Backend::evaluate_condition(Node* node, std::string out_label)
+{
+    traverse_child(node, 2);
+
+    std::string temp_var = code_generator.get_and_store_temp_var();
+
+    traverse_child(node, 0);
+
+    code_generator.print_to_target(SUB + " " + temp_var);
+
+    Node* second_child = node->children[1];
+    Token relational_operator = second_child->tokens[0];
+
+    std::string break_condition = get_break_condition(relational_operator);
+    code_generator.print_to_target(break_condition + " " + out_label);
+
+    traverse_child(node, 3);
 }

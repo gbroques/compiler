@@ -18,6 +18,7 @@ const std::string MULT = "MULT";
 const std::string DIV = "DIV";
 const std::string BREAK_ZERO_OR_POSITIVE = "BRZPOS";
 const std::string BREAK_ZERO_OR_NEGATIVE = "BRZNEG";
+const std::string BREAK = "BR";
 
 const std::string TEMP_VAR_PREFIX = "T";
 const std::string LABEL_PREFIX = "L";

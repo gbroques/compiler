@@ -18,6 +18,11 @@ void CodeGenerator::print_to_target(std::string str)
     target << str << std::endl;
 }
 
+void CodeGenerator::print_label(std::string label)
+{
+    target << label << ": NOOP" << std::endl;
+}
+
 std::string CodeGenerator::get_temp_var()
 {
     std::string temp_var = TEMP_VAR_PREFIX + std::to_string(temp_var_count);

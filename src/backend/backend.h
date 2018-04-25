@@ -38,7 +38,9 @@ class Backend
         std::string get_operation(Token token);
         void check_for_print_statements(Node* node);
         void check_for_ifstat(Node* node);
+        void check_for_loop(Node* node);
         std::string get_break_condition(Token token);
+        void evaluate_condition(Node* node, std::string out_label);
 };
 
 #endif

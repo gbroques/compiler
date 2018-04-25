@@ -11,6 +11,7 @@ class CodeGenerator
         CodeGenerator();
         ~CodeGenerator();
         void print_to_target(std::string str);
+        void print_label(std::string label);
         std::string get_temp_var();
         std::string get_and_store_temp_var();
         std::string get_label();
