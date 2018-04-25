@@ -5,11 +5,8 @@
 #include "../scanner/scanner.h"
 #include "../token/token.h"
 #include "node/node.h"
+#include "node_labels.h"
 
-const std::string BLOCK = "block";
-const std::string IFSTAT = "ifstat";
-const std::string LOOP = "loop";
-const std::string VARS = "vars";
 
 class Parser
 {

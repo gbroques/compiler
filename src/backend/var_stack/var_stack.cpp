@@ -33,11 +33,13 @@ void VarStack::erase(Token var)
  */
 int VarStack::find(Token var)
 {
+    int position_from_top_of_stack = 0;
     for (int i = var_stack.size() - 1; i >= 0; i--) {
         int count = var_stack[i].count(var);
         if (count > 0) {
-            return var_stack.size() - i - 1;
+            return position_from_top_of_stack;
         }
+        position_from_top_of_stack++;
     }
     return -1;
 }

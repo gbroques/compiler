@@ -15,6 +15,7 @@ class Token
         bool is_eof();
         bool is_identifier();
         bool is_integer();
+        std::string get_value();
         
     private:
         TokenTypeId typeId;

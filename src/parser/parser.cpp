@@ -31,7 +31,7 @@ Node* Parser::S()
 {
     int level = 1;
     if (KeywordToken::is_program_token(token)) {
-        Node* node = Node::of("S", level);
+        Node* node = Node::of(START, level);
         token = scanner->read();
         node->append_child(vars(level));
         node->append_child(block(level));
@@ -89,7 +89,7 @@ Node* Parser::vars(int level)
 Node* Parser::expr(int level)
 {
     level++;
-    Node* node = Node::of("expr", level);
+    Node* node = Node::of(EXPR, level);
     node->append_child(H(level));
     if (OperatorToken::is_addition_token(token)) {
         node->append_token(token);
@@ -121,7 +121,7 @@ Node* Parser::expr(int level)
 Node* Parser::H(int level)
 {
     level++;
-    Node* node = Node::of("H", level);
+    Node* node = Node::of(HASH, level);
     if (DelimiterToken::is_hash_token(token)) {
         node->append_token(token);
         token = scanner->read();
@@ -139,7 +139,7 @@ Node* Parser::H(int level)
 Node* Parser::R(int level)
 {
     level++;
-    Node* node = Node::of("R", level);
+    Node* node = Node::of(R_LETTER, level);
     if (DelimiterToken::is_left_parentheses_token(token)) {
         token = scanner->read();
         node->append_child(expr(level));
@@ -165,7 +165,7 @@ Node* Parser::R(int level)
 Node* Parser::stats(int level)
 {
     level++;
-    Node* node = Node::of("stats", level);
+    Node* node = Node::of(STAT, level);
     node->append_child(stat(level));
     node->append_child(m_stat(level));
     return node;
@@ -178,7 +178,7 @@ Node* Parser::m_stat(int level)
 {
     if (is_first_of_stats(token)) {
         level++;
-        Node* node = Node::of("m_stat", level);
+        Node* node = Node::of(M_STAT, level);
         node->append_child(stats(level));
         return node;
     } else {
@@ -202,7 +202,7 @@ bool Parser::is_first_of_stats(Token token)
 Node* Parser::stat(int level)
 {
     level++;
-    Node* node = Node::of("stat", level);
+    Node* node = Node::of(STAT, level);
     if (KeywordToken::is_read_token(token)) {
         node->append_child(in(level));
         check_for_comma_token();
@@ -247,7 +247,7 @@ Node* Parser::in(int level)
 {
     if (KeywordToken::is_read_token(token)) {
         level++;
-        Node* node = Node::of("in", level);
+        Node* node = Node::of(IN, level);
         token = scanner->read();
         if (token.is_identifier()) {
             node->append_token(token);
@@ -265,7 +265,7 @@ Node* Parser::out(int level)
 {
     level++;
     if (KeywordToken::is_print_token(token)) {
-        Node* node = Node::of("out", level);
+        Node* node = Node::of(OUT, level);
         token = scanner->read();
         node->append_child(expr(level));
         return node;
@@ -328,7 +328,7 @@ Node* Parser::assign(int level)
 {
     level++;
     if (KeywordToken::is_let_token(token)) {
-        Node* node = Node::of("assign", level);
+        Node* node = Node::of(ASSIGN, level);
         token = scanner->read();
         if (token.is_identifier()) {
             node->append_token(token);
@@ -349,7 +349,7 @@ Node* Parser::assign(int level)
 Node* Parser::O(int level)
 {
     level++;
-    Node* node = Node::of("O", level);
+    Node* node = Node::of(OPERATOR, level);
     if (is_O_token(token)) {
         node->append_token(token);
         token = scanner->read();

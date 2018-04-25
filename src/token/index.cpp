@@ -45,6 +45,11 @@ bool Token::is_integer()
     return this->typeId == IntegerTokenId;
 }
 
+std::string Token::get_value()
+{
+    return value;
+}
+
 std::ostream& operator<<(std::ostream &stream, const Token &token)
 {
     std::string token_type = get_token_type_name(token.typeId);

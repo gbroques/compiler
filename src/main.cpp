@@ -18,7 +18,7 @@ int main(int argc, char** argv)
     Parser parser(filename);
     Node* parse_tree = parser.parse();
     
-    Backend backend = Backend();
+    Backend backend;
     backend.traverse(parse_tree);
 
 
