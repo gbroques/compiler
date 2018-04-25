@@ -33,6 +33,7 @@ class Backend
         static bool contains_expression(Node* node);
         static bool does_not_contain_expression(Node* node);
         void check_for_assignments(Node* node, int location);
+        void check_for_input_statements(Node* node, int location);
         void check_for_r_letter(Node* node);
         void check_for_print_statements(Node* node);
 };

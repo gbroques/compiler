@@ -12,6 +12,7 @@ const std::string LOAD = "LOAD";
 const std::string STORE = "STORE";
 const std::string WRITE = "WRITE";
 const std::string T = "T";
+const std::string READ = "READ";
 
 
 #endif

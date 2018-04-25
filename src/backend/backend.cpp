@@ -67,6 +67,7 @@ void Backend::check_for_variables(Node* node)
                 print_error_and_exit(msg, id_token);
             }
             check_for_assignments(node, location);
+            check_for_input_statements(node, location);
         }
     }
 }
@@ -110,6 +111,19 @@ void Backend::check_for_assignments(Node* node, int location)
     if (node->label == ASSIGN) {
         traverse_children(node);
         std::string str = STACK_WRITE + " " + std::to_string(location);
+        code_generator.print_to_target(str);
+    }
+}
+
+void Backend::check_for_input_statements(Node* node, int location)
+{
+    if (node->label == IN) {
+        std::string temp_var = code_generator.get_temp_var();
+        std::string str = READ + " " + temp_var;
+        code_generator.print_to_target(str);
+        str = LOAD + " " + temp_var;
+        code_generator.print_to_target(str);
+        str = STACK_WRITE + " " + std::to_string(location);
         code_generator.print_to_target(str);
     }
 }
