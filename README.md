@@ -83,3 +83,92 @@ The only static semantics imposed by the compiler are proper use of variables. B
 In our language scopes are imposed by blocks denoted by **start** and **end**, conditionals denoted by **if**, and loops denoted by **iter**.
 
 For our compiler, we implement **local scoping** in contrast to global scoping.
+
+
+## Sample Programs and Language Features
+
+### Variables
+
+```
+program
+var num
+start
+  let num = 42 ,
+  print num ,
+end
+```
+
+Output:
+
+```
+42
+```
+
+### Loops
+
+```
+program
+var i
+start
+  let i = 0 ,
+  iter (i < 3)
+    start
+      print i ,
+      let i = (i + 1) ,
+    end ,
+  ,
+end
+```
+
+Output:
+
+```
+0
+1
+2
+```
+
+### Conditionals
+
+```
+program
+start
+if (10 > 5)
+  print 1 ,
+,
+end
+```
+
+Output:
+
+```
+1
+```
+
+### Arithmetic and Expressions
+
+```
+program
+start
+  print (((2 + 2) * 3) / 4) ,
+end
+```
+
+Output:
+
+```
+3
+```
+
+### Input
+
+```
+program
+start
+  var num
+  read num ,
+  print num ,
+end
+```
+
+The program would print whatever the user input.
