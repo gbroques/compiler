@@ -362,7 +362,7 @@ bool Parser::is_O_token(Token token)
 {
     return OperatorToken::is_less_than_token(token) ||
            OperatorToken::is_greater_than_token(token) ||
-           DelimiterToken::is_colon_token(token);
+           OperatorToken::is_equals_token(token);
 }
 
 void Parser::print_error_and_exit()

@@ -9,7 +9,6 @@ class DelimiterToken : public Token
 {
     public:
         static bool is_delimiter(char character);
-        static bool is_colon_token(Token token);
         static bool is_hash_token(Token token);
         static bool is_dot_token(Token token);
         static bool is_left_parentheses_token(Token token);

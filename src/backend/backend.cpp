@@ -203,7 +203,6 @@ void Backend::check_for_ifstat(Node* node)
     }
 }
 
-
 void Backend::check_for_loop(Node* node)
 {
     if (node->label == LOOP) {
@@ -219,16 +218,18 @@ void Backend::check_for_loop(Node* node)
     }
 }
 
-
-std::string Backend::get_break_condition(Token relational_operator)
+std::vector<std::string> Backend::get_break_conditions(Token relational_operator)
 {
-    std::string break_condition;
+    std::vector<std::string> break_conditions;
     if (OperatorToken::is_less_than_token(relational_operator)) {
-        break_condition = BREAK_ZERO_OR_POSITIVE;
+        break_conditions.push_back(BREAK_ZERO_OR_POSITIVE);
     } else if (OperatorToken::is_greater_than_token(relational_operator)) {
-        break_condition = BREAK_ZERO_OR_NEGATIVE;
+        break_conditions.push_back(BREAK_ZERO_OR_NEGATIVE);
+    } else if (OperatorToken::is_equals_token(relational_operator)) {
+        break_conditions.push_back(BREAK_NEGATIVE);
+        break_conditions.push_back(BREAK_POSITIVE);
     }
-    return break_condition;
+    return break_conditions;
 }
 
 /**
@@ -247,8 +248,10 @@ void Backend::evaluate_condition(Node* node, std::string out_label)
     Node* second_child = node->children[1];
     Token relational_operator = second_child->tokens[0];
 
-    std::string break_condition = get_break_condition(relational_operator);
-    code_generator.print_to_target(break_condition + " " + out_label);
+    std::vector<std::string> break_conditions = get_break_conditions(relational_operator);
+    for (auto break_condition : break_conditions) {
+        code_generator.print_to_target(break_condition + " " + out_label);
+    }
 
     traverse_child(node, 3);
 }

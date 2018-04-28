@@ -1,6 +1,5 @@
 #include "delimiter_token.h"
 
-const char COLON = ':';
 const char HASH = '#';
 const char DOT = '.';
 const char LEFT_PARENTHESES = '(';
@@ -15,12 +14,6 @@ const char RIGHT_SQUARE_BRACKET = ']';
 bool DelimiterToken::is_delimiter(char character)
 {
     return delimiters.find(character) != delimiters.end();
-}
-
-bool DelimiterToken::is_colon_token(Token token)
-{
-    Token colon_token = DelimiterToken(COLON);
-    return token == colon_token;
 }
 
 bool DelimiterToken::is_hash_token(Token token)
@@ -90,7 +83,6 @@ DelimiterToken::DelimiterToken(char value)
 : Token(DelimiterTokenId, value) {}
 
 std::set<char> DelimiterToken::delimiters = {
-    COLON,
     HASH,
     DOT,
     LEFT_PARENTHESES,

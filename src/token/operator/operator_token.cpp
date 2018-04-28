@@ -8,6 +8,7 @@ const char DIVISION = '/';
 const char LESS_THAN = '<';
 const char GREATER_THAN = '>';
 const char ASSIGNMENT = '=';
+const char EQUALS = ':';
 
 bool OperatorToken::is_operator(char character)
 {
@@ -50,6 +51,12 @@ bool OperatorToken::is_greater_than_token(Token token)
     return token == greater_than_token;
 }
 
+bool OperatorToken::is_equals_token(Token token)
+{
+    Token equals_token = OperatorToken(EQUALS);
+    return token == equals_token;
+}
+
 bool OperatorToken::is_assignment_token(Token token)
 {
     Token assignment_token = OperatorToken(ASSIGNMENT);
@@ -69,5 +76,6 @@ std::set<char> OperatorToken::operators = {
     DIVISION,
     LESS_THAN,
     GREATER_THAN,
+    EQUALS,
     ASSIGNMENT
 };
