@@ -4,3 +4,4 @@
 test*.txt
 build
 comp
+*.asm

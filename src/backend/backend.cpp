@@ -4,6 +4,11 @@
 const std::set<std::string> Backend::new_scope_labels = {BLOCK, IFSTAT, LOOP};
 const std::set<std::string> Backend::labels_containing_expr = {ASSIGN, OUT, IFSTAT, LOOP};
 
+Backend::Backend(std::string base_filename)
+{
+    code_generator = new CodeGenerator(base_filename);
+}
+
 void Backend::traverse(Node* node)
 {
     if (node == NULL) {
@@ -12,7 +17,7 @@ void Backend::traverse(Node* node)
 
     if (introduces_new_scope(node)) {  // Entering a scope
         var_stack.push();
-        code_generator.print_to_target(PUSH);
+        code_generator->print_to_target(PUSH);
     }
 
     check_for_variables(node);
@@ -36,14 +41,14 @@ void Backend::traverse(Node* node)
     if (introduces_new_scope(node)) {  // Exiting a scope
         pop_vars_in_current_scope();
         var_stack.pop();
-        code_generator.print_to_target(POP);
+        code_generator->print_to_target(POP);
     }
 
     if (node->label == START) {
         pop_vars_in_current_scope();  // Print POP for all global vars
-        code_generator.print_to_target(STOP);
-        code_generator.set_temp_vars_to_zero();
-        code_generator.close_target();
+        code_generator->print_to_target(STOP);
+        code_generator->set_temp_vars_to_zero();
+        code_generator->close_target();
     }
 }
 
@@ -51,7 +56,7 @@ void Backend::pop_vars_in_current_scope()
 {
     int num_vars_in_current_scope = var_stack.num_vars_in_current_scope();
     for (int i = 0; i < num_vars_in_current_scope; i++) {
-        code_generator.print_to_target(POP);
+        code_generator->print_to_target(POP);
     }
 }
 
@@ -66,7 +71,7 @@ void Backend::check_for_variables(Node* node)
                 std::string msg = "Duplicate variable declaration";
                 print_error_and_exit(msg, id_token);
             }
-            code_generator.print_to_target(PUSH);
+            code_generator->print_to_target(PUSH);
             var_stack.insert(id_token);
         } else {
             int location = var_stack.find(id_token);
@@ -128,20 +133,20 @@ void Backend::check_for_assignments(Node* node, int location)
     if (node->label == ASSIGN) {
         traverse_children(node);
         std::string str = STACK_WRITE + " " + std::to_string(location);
-        code_generator.print_to_target(str);
+        code_generator->print_to_target(str);
     }
 }
 
 void Backend::check_for_input_statements(Node* node, int location)
 {
     if (node->label == IN) {
-        std::string temp_var = code_generator.get_temp_var();
+        std::string temp_var = code_generator->get_temp_var();
         std::string str = READ + " " + temp_var;
-        code_generator.print_to_target(str);
+        code_generator->print_to_target(str);
         str = LOAD + " " + temp_var;
-        code_generator.print_to_target(str);
+        code_generator->print_to_target(str);
         str = STACK_WRITE + " " + std::to_string(location);
-        code_generator.print_to_target(str);
+        code_generator->print_to_target(str);
     }
 }
 
@@ -149,7 +154,7 @@ void Backend::check_for_negation(Node* node)
 {
     if (node->label == HASH && node->tokens.size() == 1) {
         traverse_children(node);
-        code_generator.print_to_target(MULT + " -1");
+        code_generator->print_to_target(MULT + " -1");
     }
 }
 
@@ -160,11 +165,11 @@ void Backend::check_for_r_letter(Node* node)
             if (token.is_identifier()) {
                 int location = var_stack.find(token);
                 std::string str = STACK_READ + " " + std::to_string(location);
-                code_generator.print_to_target(str);
+                code_generator->print_to_target(str);
             }
             if (token.is_integer()) {
                 std::string str = LOAD + " " + token.get_value();
-                code_generator.print_to_target(str);
+                code_generator->print_to_target(str);
             }
         }
     }
@@ -175,14 +180,14 @@ void Backend::check_for_expr(Node* node)
     if (node->label == EXPR and node->children.size() == 2) {
         traverse_child(node, 1);
 
-        std::string temp_var = code_generator.get_and_store_temp_var();
+        std::string temp_var = code_generator->get_and_store_temp_var();
 
         traverse_child(node, 0);
 
         Token operator_token = node->tokens[0];
         std::string operation = get_operation(operator_token);
 
-        code_generator.print_to_target(operation + " " + temp_var);
+        code_generator->print_to_target(operation + " " + temp_var);
     }
 }
 
@@ -205,34 +210,34 @@ void Backend::check_for_print_statements(Node* node)
 {
     if (node->label == OUT) {
         traverse_children(node);
-        std::string temp_var = code_generator.get_and_store_temp_var();
-        code_generator.print_to_target(WRITE + " " + temp_var);
+        std::string temp_var = code_generator->get_and_store_temp_var();
+        code_generator->print_to_target(WRITE + " " + temp_var);
     }
 }
 
 void Backend::check_for_ifstat(Node* node)
 {
     if (node->label == IFSTAT) {
-        std::string label = code_generator.get_label();
+        std::string label = code_generator->get_label();
 
         evaluate_condition(node, label);
 
-        code_generator.print_label(label);
+        code_generator->print_label(label);
     }
 }
 
 void Backend::check_for_loop(Node* node)
 {
     if (node->label == LOOP) {
-        std::string loop_label = code_generator.get_label();
-        std::string out_label = code_generator.get_label();
+        std::string loop_label = code_generator->get_label();
+        std::string out_label = code_generator->get_label();
 
-        code_generator.print_label(loop_label);
+        code_generator->print_label(loop_label);
 
         evaluate_condition(node, out_label);
         
-        code_generator.print_to_target(BREAK + " " + loop_label);
-        code_generator.print_label(out_label);
+        code_generator->print_to_target(BREAK + " " + loop_label);
+        code_generator->print_label(out_label);
     }
 }
 
@@ -257,18 +262,18 @@ void Backend::evaluate_condition(Node* node, std::string out_label)
 {
     traverse_child(node, 2);
 
-    std::string temp_var = code_generator.get_and_store_temp_var();
+    std::string temp_var = code_generator->get_and_store_temp_var();
 
     traverse_child(node, 0);
 
-    code_generator.print_to_target(SUB + " " + temp_var);
+    code_generator->print_to_target(SUB + " " + temp_var);
 
     Node* second_child = node->children[1];
     Token relational_operator = second_child->tokens[0];
 
     std::vector<std::string> break_conditions = get_break_conditions(relational_operator);
     for (auto break_condition : break_conditions) {
-        code_generator.print_to_target(break_condition + " " + out_label);
+        code_generator->print_to_target(break_condition + " " + out_label);
     }
 
     traverse_child(node, 3);

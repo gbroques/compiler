@@ -1,9 +1,9 @@
 #include "code_generator.h"
 #include <stdarg.h>
 
-CodeGenerator::CodeGenerator()
+CodeGenerator::CodeGenerator(std::string base_filename)
 {
-    target.open("a.asm");
+    target.open(base_filename + ASM_EXT);
     temp_var_count = 0;
     label_count = 0;
 }

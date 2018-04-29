@@ -2,13 +2,16 @@
 #define CODE_GENERATOR_H
 
 #include <string>
-#include "../target_keywords.h"
 #include <fstream>
+
+#include "../target_keywords.h"
+
+const std::string ASM_EXT = ".asm";
 
 class CodeGenerator
 {
     public:
-        CodeGenerator();
+        CodeGenerator(std::string base_filename);
         ~CodeGenerator();
         void print_to_target(std::string str);
         void print_label(std::string label);

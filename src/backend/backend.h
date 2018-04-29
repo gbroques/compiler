@@ -12,14 +12,16 @@
  *   - storage allocation
  *   - and code generation
  */
+
 class Backend
 {
     public:
+        Backend(std::string base_filename);
         void traverse(Node* node);
 
     private:
         VarStack var_stack;
-        CodeGenerator code_generator;
+        CodeGenerator* code_generator;
         const static std::set<std::string> new_scope_labels;
         const static std::set<std::string> labels_containing_expr;
         void check_for_variables(Node* node);

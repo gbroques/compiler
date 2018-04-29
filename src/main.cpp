@@ -18,12 +18,14 @@ int main(int argc, char** argv)
     
     Parser parser(filename);
     Node* parse_tree = parser.parse();
+    size_t lastindex = filename.find_last_of(".");
+    std::string basename = filename.substr(0, lastindex);
     
-    Backend backend;
+    Backend backend(basename);
     backend.traverse(parse_tree);
     
     Optimizer optimizer;
-    optimizer.optimize("a.asm");
+    optimizer.optimize(basename + ASM_EXT);
     
     Node::destroy(parse_tree);
 
