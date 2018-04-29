@@ -122,7 +122,7 @@ Node* Parser::H(int level)
 {
     level++;
     Node* node = Node::of(HASH, level);
-    if (DelimiterToken::is_hash_token(token)) {
+    if (OperatorToken::is_negation_token(token)) {
         node->append_token(token);
         token = scanner->read();
         node->append_child(R(level));

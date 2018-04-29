@@ -13,6 +13,7 @@ class OperatorToken : public Token
         static bool is_subtraction_token(Token token);
         static bool is_multiplication_token(Token token);
         static bool is_division_token(Token token);
+        static bool is_negation_token(Token token);
         static bool is_less_than_token(Token token);
         static bool is_greater_than_token(Token token);
         static bool is_equals_token(Token token);

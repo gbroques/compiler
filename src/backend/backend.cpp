@@ -19,6 +19,8 @@ void Backend::traverse(Node* node)
 
     check_for_print_statements(node);
 
+    check_for_negation(node);
+
     check_for_r_letter(node);
 
     check_for_expr(node);
@@ -110,7 +112,8 @@ bool Backend::does_not_contain_expression(Node* node)
 bool Backend::contains_expression(Node* node)
 {
     return labels_containing_expr.count(node->label) == 1 ||
-           (node->label == EXPR && node->children.size() == 2);  // <expr> -> <H> does not contain <expr>
+           (node->label == EXPR && node->children.size() == 2) ||  // <expr> -> <H> does not contain <expr>
+           (node->label == HASH && node->tokens.size() == 1);
 }
 
 void Backend::check_for_assignments(Node* node, int location)
@@ -132,6 +135,14 @@ void Backend::check_for_input_statements(Node* node, int location)
         code_generator.print_to_target(str);
         str = STACK_WRITE + " " + std::to_string(location);
         code_generator.print_to_target(str);
+    }
+}
+
+void Backend::check_for_negation(Node* node)
+{
+    if (node->label == HASH && node->tokens.size() == 1) {
+        traverse_children(node);
+        code_generator.print_to_target(MULT + " -1");
     }
 }
 

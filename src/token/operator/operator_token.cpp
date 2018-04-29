@@ -5,6 +5,7 @@ const char ADDITION = '+';
 const char SUBTRACTION = '-';
 const char MULTIPLICATION = '*';
 const char DIVISION = '/';
+const char NEGATION = '#';
 const char LESS_THAN = '<';
 const char GREATER_THAN = '>';
 const char ASSIGNMENT = '=';
@@ -37,6 +38,12 @@ bool OperatorToken::is_division_token(Token token)
 {
     Token division_token = OperatorToken(DIVISION);
     return token == division_token;
+}
+
+bool OperatorToken::is_negation_token(Token token)
+{
+    Token negation_token = OperatorToken(NEGATION);
+    return token == negation_token;
 }
 
 bool OperatorToken::is_less_than_token(Token token)
@@ -74,6 +81,7 @@ std::set<char> OperatorToken::operators = {
     SUBTRACTION,
     MULTIPLICATION,
     DIVISION,
+    NEGATION,
     LESS_THAN,
     GREATER_THAN,
     EQUALS,
