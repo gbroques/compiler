@@ -1,7 +1,8 @@
 #include <iostream>
+
 #include "parser.h"
 #include "../scanner/scanner.h"
-#include "../token/token.h"  
+#include "../../token/token.h"  
 
 Parser::Parser(std::string filename)
 {

@@ -1,19 +1,164 @@
 # Compiler
 
+This is a simple compiler written for an undergraduate course in Program Translation.
+
+## Usage
+
+1. Run `make`.
+
+2. Create a program file. For example, `myprogram.txt`:
+
+```
+! myprogram.txt !
+program
+var num
+start
+  let num = 42 ,
+  print num ,
+end
+```
+
+3. Compile the program into assembly code.
+
+```
+$ comp myprogram.txt
+```
+
+4. Run the interpreter on the corresponding assembly code
+
+```
+$ asmb myprogram.asm
+```
+
+## Sample Programs and Language Features
+
+### Variables
+
+```
+program
+var num
+start
+  let num = 42 ,
+  print num ,
+end
+```
+
+Output:
+
+```
+42
+```
+
+
+### Loops
+
+```
+program
+var i
+start
+  let i = 0 ,
+  iter (i < 3)
+    start
+      print i ,
+      let i = (i + 1) ,
+    end ,
+  ,
+end
+```
+
+Output:
+
+```
+0
+1
+2
+```
+
+
+### Conditionals
+
+```
+program
+start
+if (10 > 5)
+  print 1 ,
+,
+end
+```
+
+Output:
+
+```
+1
+```
+
+#### Supported Operators
+
+* **>** - Greater than
+* **<** - Less than
+* **:** - Equals
+
+
+### Arithmetic and Expressions
+
+```
+program
+start
+  print #(((2 + 2) * 3) / 4) ,
+end
+```
+
+Output:
+
+```
+-3
+```
+
+**NOTE:** All operators have standard meaning except **#** means *negation*.
+
+
+### Input
+
+```
+program
+start
+  var num
+  read num ,
+  print num ,
+end
+```
+
+The program would print whatever the user input.
+
+
+### Comments
+
+```
+program
+start
+  ! This is a comment !
+  print 1 ,
+end
+```
+
+Comments are surrounded in exclamation points `!`.
+
+## Frontend
+
+The frontend of our compiler is composed of two parts:
+
 1. Scanner - Converts a stream of characters into tokens
 2. Parser - Converts the tokens into a parse tree
 
-## How to Run
-1. `make`
-2. `./frontEnd filename`
+The scanner uses a driver and state transition table.
 
-## Deterministic Finite Automaton
+### Deterministic Finite Automaton
 ![Deterministic Finite Automaton](assets/deterministic-finite-automaton.png)
 
 To edit import `assets/deterministic-finite-automaton.json` at https://merfoo.github.io/fsm/
 
 
-## State Transition Table
+### State Transition Table
 
 The following table is located at `src/scanner/state_transition_table/state_transition_table.cpp`.
 
@@ -44,7 +189,9 @@ To edit import `assets/state-transition-table.csv` into your favorite spreadshee
 | 19          | Identifier   | Identifier    | Identifier            | 19          | 19          | Identifier   | Identifier   | 
 | Error       | Identifier   | Identifier    | Identifier            | Error       | Error       | Identifier   | Identifier   | 
 
-## BNF
+### BNF
+
+The parser enforces the following grammar rules.
 
 \<S> -> **program** \<vars> \<block>
 
@@ -76,7 +223,15 @@ To edit import `assets/state-transition-table.csv` into your favorite spreadshee
 
 \<O> -> **<** | **>** | **:**
 
-## Static Semantics
+## Backend
+
+The backend of our compiler is composed of three parts:
+
+1. Static semantics
+2. Code generation
+3. and optimization
+
+### Static Semantics
 
 The only static semantics imposed by the compiler are proper use of variables. Before using a variable, you must first declare it using the **var** keyword.
 
@@ -84,91 +239,37 @@ In our language scopes are imposed by blocks denoted by **start** and **end**, c
 
 For our compiler, we implement **local scoping** in contrast to global scoping.
 
+### Code Generation
+We traverse the decorated parse tree for each node generate corresponding assembly code.
 
-## Sample Programs and Language Features
+### Optimization
+For optimization we remove redundant assembly code statements to read from stack memory when we just wrote to that same location in stack memory.
 
-### Variables
-
-```
-program
-var num
-start
-  let num = 42 ,
-  print num ,
-end
-```
-
-Output:
-
-```
-42
-```
-
-### Loops
+For example, consider the following program:
 
 ```
 program
-var i
+var id1
 start
-  let i = 0 ,
-  iter (i < 3)
-    start
-      print i ,
-      let i = (i + 1) ,
-    end ,
-  ,
+let id1 = 2 ,
+print id1 ,
 end
 ```
 
-Output:
+For which the compiler generates the following assembly code:
 
 ```
-0
-1
-2
+PUSH
+PUSH
+LOAD 2
+STACKW 1
+STACKR 1
+STORE T0
+WRITE T0
+POP
+POP
+STOP
+T0 0
 ```
 
-### Conditionals
-
-```
-program
-start
-if (10 > 5)
-  print 1 ,
-,
-end
-```
-
-Output:
-
-```
-1
-```
-
-### Arithmetic and Expressions
-
-```
-program
-start
-  print (((2 + 2) * 3) / 4) ,
-end
-```
-
-Output:
-
-```
-3
-```
-
-### Input
-
-```
-program
-start
-  var num
-  read num ,
-  print num ,
-end
-```
-
-The program would print whatever the user input.
+The optimization removes the `STACKR 1` statement since it is immediately preceded by `STACKW 1`.

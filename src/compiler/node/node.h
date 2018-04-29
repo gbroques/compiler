@@ -3,7 +3,9 @@
 
 #include <vector>
 #include <string>
-#include "../../token/token.h"
+
+#include "../token/token.h"
+#include "node_labels.h"
 
 class Node
 {

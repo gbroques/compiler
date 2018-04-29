@@ -2,10 +2,9 @@
 #include <string>
 #include <fstream>
 #include <stdlib.h>
+
 #include "timer.h"
-#include "parser/parser.h"
-#include "backend/backend.h"
-#include "backend/optimizer/optimizer.h"
+#include "compiler/compiler.h"
 
 std::string get_filename(int argc, char** argv);
 
@@ -16,18 +15,8 @@ int main(int argc, char** argv)
 
     std::string filename = get_filename(argc, argv);
     
-    Parser parser(filename);
-    Node* parse_tree = parser.parse();
-    size_t lastindex = filename.find_last_of(".");
-    std::string basename = filename.substr(0, lastindex);
-    
-    Backend backend(basename);
-    backend.traverse(parse_tree);
-    
-    Optimizer optimizer;
-    optimizer.optimize(basename + ASM_EXT);
-    
-    Node::destroy(parse_tree);
+    Compiler compiler;
+    compiler.compile(filename);
 
     std::cout << "OK\n";
 

@@ -2,11 +2,10 @@
 #define PARSER_H
 
 #include <string>
-#include "../scanner/scanner.h"
-#include "../token/token.h"
-#include "node/node.h"
-#include "node_labels.h"
 
+#include "../scanner/scanner.h"
+#include "../../token/token.h"
+#include "../../node/node.h"
 
 class Parser
 {

@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+
 #include "scanner.h"
 #include "state_transition_table/state_transition_table.h"
 

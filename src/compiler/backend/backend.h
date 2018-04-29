@@ -2,9 +2,11 @@
 #define BACKEND_H
 
 #include <iostream>
-#include "../parser/parser.h"
+
+#include "../node/node.h"
 #include "var_stack/var_stack.h"
 #include "code_generator/code_generator.h"
+#include "optimizer/optimizer.h"
 
 /**
  * Backend part of compiler responsible for:
