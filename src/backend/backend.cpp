@@ -43,6 +43,7 @@ void Backend::traverse(Node* node)
         pop_vars_in_current_scope();  // Print POP for all global vars
         code_generator.print_to_target(STOP);
         code_generator.set_temp_vars_to_zero();
+        code_generator.close_target();
     }
 }
 

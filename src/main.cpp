@@ -5,6 +5,7 @@
 #include "timer.h"
 #include "parser/parser.h"
 #include "backend/backend.h"
+#include "backend/optimizer/optimizer.h"
 
 std::string get_filename(int argc, char** argv);
 
@@ -20,8 +21,10 @@ int main(int argc, char** argv)
     
     Backend backend;
     backend.traverse(parse_tree);
-
-
+    
+    Optimizer optimizer;
+    optimizer.optimize("a.asm");
+    
     Node::destroy(parse_tree);
 
     std::cout << "OK\n";

@@ -50,3 +50,8 @@ std::string CodeGenerator::get_label()
     label_count++;
     return label;
 }
+
+void CodeGenerator::close_target()
+{
+    target.close();
+}
