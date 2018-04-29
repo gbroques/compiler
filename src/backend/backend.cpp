@@ -34,17 +34,23 @@ void Backend::traverse(Node* node)
     }
 
     if (introduces_new_scope(node)) {  // Exiting a scope
-        int num_vars_in_current_scope = var_stack.num_vars_in_current_scope();
-        for (int i = 0; i < num_vars_in_current_scope; i++) {
-            code_generator.print_to_target(POP);
-        }
+        pop_vars_in_current_scope();
         var_stack.pop();
         code_generator.print_to_target(POP);
     }
 
     if (node->label == START) {
+        pop_vars_in_current_scope();  // Print POP for all global vars
         code_generator.print_to_target(STOP);
         code_generator.set_temp_vars_to_zero();
+    }
+}
+
+void Backend::pop_vars_in_current_scope()
+{
+    int num_vars_in_current_scope = var_stack.num_vars_in_current_scope();
+    for (int i = 0; i < num_vars_in_current_scope; i++) {
+        code_generator.print_to_target(POP);
     }
 }
 

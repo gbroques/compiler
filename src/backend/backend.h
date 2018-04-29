@@ -26,6 +26,7 @@ class Backend
         void check_location(int location, std::string err_msg, Token token);
         void print_error_and_exit(std::string msg, Token token);
         void traverse_children(Node* node);
+        void pop_vars_in_current_scope();
         void traverse_child(Node* node, int child_index);
         static bool introduces_new_scope(Node* node);
         static bool contains_variable_declarations(Node* node);
